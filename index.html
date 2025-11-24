@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>$MONAPE - APE ON MONAD</title>
+    <style>
+        /* --- BASE STYLES (MANTIDO) --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            background-color: #000000;
+            color: #ffffff;
+            font-family: 'Courier New', Courier, monospace;
+            overflow-x: hidden;
+            background-image: 
+                linear-gradient(45deg, #1a0b2e 25%, transparent 25%), 
+                linear-gradient(-45deg, #1a0b2e 25%, transparent 25%), 
+                linear-gradient(45deg, transparent 75%, #1a0b2e 75%), 
+                linear-gradient(-45deg, transparent 75%, #1a0b2e 75%);
+            background-size: 20px 20px;
+            padding-bottom: 50px;
+        }
+
+        :root {
+            --monad-purple: #8338ec;
+            --acid-green: #39ff14;
+            --alert-red: #ff003c;
+            --dark-grey: #111;
+        }
+
+        .container { max-width: 800px; margin: 0 auto; padding: 20px; text-align: center; }
+        a { text-decoration: none; }
+
+        /* --- GLITCH & ANIMATIONS (MANTIDO) --- */
+        .glitch {
+            font-size: 3rem; font-weight: bold; text-transform: uppercase; position: relative;
+            text-shadow: 2px 2px 0px var(--monad-purple), -2px -2px 0px var(--acid-green);
+            animation: shake 0.5s infinite;
+        }
+        @keyframes shake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            20% { transform: translate(-3px, 0px) rotate(1deg); }
+            40% { transform: translate(1px, -1px) rotate(1deg); }
+            60% { transform: translate(-3px, 1px) rotate(0deg); }
+            80% { transform: translate(-1px, -1px) rotate(1deg); }
+            100% { transform: translate(1px, -2px) rotate(-1deg); }
+        }
+
+        /* --- HEADER --- */
+        header { margin-bottom: 40px; border-bottom: 4px solid var(--monad-purple); padding-bottom: 20px; }
+        .logo-img {
+            width: 150px; height: 150px; border-radius: 50%;
+            border: 5px solid var(--acid-green);
+            box-shadow: 0 0 20px var(--monad-purple); margin-bottom: 10px;
+            animation: spin 10s linear infinite;
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        /* --- VIDEO --- */
+        .video-box {
+            border: 5px dashed var(--alert-red); padding: 10px; background: #000;
+            margin: 30px 0; box-shadow: 10px 10px 0px var(--monad-purple);
+        }
+        video { width: 100%; display: block; }
+
+        /* --- BUTTONS --- */
+        .btn-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-top: 30px; }
+        .btn {
+            background: #000; border: 2px solid var(--acid-green); color: var(--acid-green);
+            padding: 15px 30px; font-size: 1.2rem; font-weight: bold; text-transform: uppercase;
+            cursor: pointer; transition: 0.1s; box-shadow: 5px 5px 0px var(--acid-green);
+        }
+        .btn:hover {
+            background: var(--acid-green); color: #000;
+            transform: translate(2px, 2px); box-shadow: 3px 3px 0px var(--monad-purple);
+        }
+        .btn-buy {
+            background: var(--monad-purple); color: #fff; border-color: #fff;
+            box-shadow: 5px 5px 0px #fff; font-size: 1.5rem; animation: pulse 1s infinite;
+        }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+
+        /* --- MARQUEE --- */
+        .marquee-container {
+            background: var(--acid-green); color: #000; padding: 10px 0; margin: 40px 0;
+            border-top: 3px solid #000; border-bottom: 3px solid #000; overflow: hidden; white-space: nowrap;
+        }
+        .marquee-content {
+            display: inline-block; padding-left: 100%; animation: scroll 15s linear infinite;
+            font-weight: 900; font-size: 1.5rem;
+        }
+        @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+
+        /* --- NOVOS ESTILOS PARA SEÇÕES COMPLETAS --- */
+        
+        /* Section Titles */
+        .section-title {
+            font-size: 2rem; margin-top: 60px; margin-bottom: 20px;
+            border-bottom: 2px solid var(--alert-red); display: inline-block;
+            color: var(--alert-red); text-shadow: 2px 2px 0 #fff;
+        }
+
+        /* Tokenomics Grid */
+        .tokenomics-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;
+        }
+        .stat-box {
+            border: 2px solid var(--monad-purple); background: var(--dark-grey); padding: 20px;
+            transition: 0.3s;
+        }
+        .stat-box:hover { background: var(--monad-purple); color: #000; }
+        .stat-val { font-size: 1.5rem; font-weight: bold; margin-top: 10px; color: var(--acid-green); }
+        .stat-box:hover .stat-val { color: #fff; }
+
+        /* Roadmap List */
+        .roadmap-list { text-align: left; border: 1px solid #fff; padding: 20px; background: #050505; }
+        .roadmap-item { margin-bottom: 15px; border-left: 4px solid var(--acid-green); padding-left: 10px; }
+        .roadmap-item h3 { color: var(--monad-purple); }
+
+        /* How to Buy */
+        .step-box {
+            margin: 10px 0; padding: 15px; border: 1px dashed #555; text-align: left;
+        }
+        .step-num { color: var(--alert-red); font-weight: bold; margin-right: 10px; }
+
+        /* CA Box Updated */
+        .ca-box {
+            background: #111; border: 2px solid var(--monad-purple); padding: 15px; margin-top: 20px;
+            word-break: break-all; font-family: monospace; color: var(--monad-purple); cursor: pointer;
+            position: relative;
+        }
+        .ca-box:active { background: #222; transform: scale(0.98); }
+        .copy-tooltip {
+            display: none; color: var(--acid-green); font-weight: bold; margin-top: 5px;
+        }
+
+        .ascii-art {
+            white-space: pre; font-size: 10px; line-height: 10px; color: var(--monad-purple);
+            margin: 40px 0; overflow-x: hidden;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="marquee-container">
+        <div class="marquee-content">
+            APE ON MONAD /// $MONAPE /// NO ROADMAP /// NO UTILITY /// PURE CHAOS /// REJECT HUMANITY /// APE ON MONAD /// $MONAPE
+        </div>
+    </div>
+
+    <div class="container">
+        
+        <header>
+            <img src="logo.jpg" alt="$MONAPE Logo" class="logo-img">
+            <h1 class="glitch">$MONAPE</h1>
+            <p style="color: var(--acid-green); margin-top: 10px;">[ THE MONAD TAKEOVER ]</p>
+        </header>
+
+        <div class="video-box">
+            <video autoplay muted loop playsinline>
+                <source src="1.mp4" type="video/mp4">
+            </video>
+        </div>
+
+        <div style="border: 2px solid #fff; padding: 20px; margin-bottom: 20px;">
+            <h2 style="color: var(--alert-red); margin-bottom: 10px;">WARNING: HIGH VOLTAGE</h2>
+            <p>WE DO NOT KNOW WHAT WE ARE DOING.</p>
+            <p>NEITHER DO YOU.</p>
+            <br>
+            <p>>> SYSTEM STATUS: <span style="color:var(--acid-green)">ONLINE</span></p>
+            <p>>> MONAD: <span style="color:var(--monad-purple)">DETECTED</span></p>
+        </div>
+
+        <div class="btn-container">
+            <a href="https://x.com/ApeOnMonad" target="_blank" class="btn">X [TWITTER]</a>
+            <a href="https://t.me/apeonmonad" target="_blank" class="btn">TELEGRAM</a>
+        </div>
+
+        <div class="btn-container">
+            <a href="#" class="btn btn-buy">$$$ BUY $MONAPE NOW $$$</a>
+        </div>
+
+        <h2 class="section-title">TOKENOMICS</h2>
+        <div class="tokenomics-grid">
+            <div class="stat-box">
+                <div>SUPPLY</div>
+                <div class="stat-val">1 BILLION</div>
+            </div>
+            <div class="stat-box">
+                <div>TAXES</div>
+                <div class="stat-val">0% / 0%</div>
+            </div>
+            <div class="stat-box">
+                <div>LIQUIDITY</div>
+                <div class="stat-val">BURNT 🔥</div>
+            </div>
+        </div>
+
+        <h2 class="section-title">HOW TO APE</h2>
+        <div style="border: 1px solid #333; padding: 20px;">
+            <div class="step-box">
+                <span class="step-num">01.</span> BRIDGE TO MONAD NETWORK
+            </div>
+            <div class="step-box">
+                <span class="step-num">02.</span> GET SOME $MON
+            </div>
+            <div class="step-box">
+                <span class="step-num">03.</span> PASTE CA & SWAP FOR $MONAPE
+            </div>
+            <div class="step-box">
+                <span class="step-num">04.</span> HOLD TILL VALHALLA
+            </div>
+        </div>
+
+        <h2 class="section-title">ROADMAP</h2>
+        <div class="roadmap-list">
+            <div class="roadmap-item">
+                <h3>PHASE 1: CHAOS</h3>
+                <p>Launch. Website. Community. Panic.</p>
+            </div>
+            <div class="roadmap-item">
+                <h3>PHASE 2: VIBES</h3>
+                <p>Marketing. Memes. More Panic.</p>
+            </div>
+            <div class="roadmap-item">
+                <h3>PHASE 3: MONAD</h3>
+                <p>We take over the chain. Simple.</p>
+            </div>
+        </div>
+
+        <div class="ascii-art">
+   _____  _____  ______ 
+  /  _  \|  _  \|  ____|
+ /  /_\  \ |_) | |__   
+/    |    \  __/|  __|  
+\    |    / |   | |____ 
+ \__|__/\/|_|   |______|
+   MONKEY BUSINESS ONLY
+        </div>
+
+        <div class="ca-box" onclick="copyToClipboard()">
+            <p>CLICK TO COPY CA:</p>
+            <p id="ca-text" style="color: #fff; font-weight: bold; font-size: 1.1rem; margin-top:5px;">0x0000000000000000000000000000000000000000</p>
+            <p style="font-size: 0.8rem; margin-top: 5px; opacity: 0.7;">(MONAD NETWORK)</p>
+            <div id="copy-msg" class="copy-tooltip">COPIED TO CLIPBOARD!</div>
+        </div>
+
+        <footer style="margin-top: 50px; font-size: 0.8rem; opacity: 0.6;">
+            &copy; 2025 APE ON MONAD. ALL RIGHTS RESERVED (OR NOT).
+        </footer>
+
+    </div>
+
+    <script>
+        function copyToClipboard() {
+            // Substitua pelo seu CA real abaixo
+            const ca = "0x0000000000000000000000000000000000000000";
+            
+            navigator.clipboard.writeText(ca).then(() => {
+                const msg = document.getElementById("copy-msg");
+                const caBox = document.querySelector(".ca-box");
+                
+                msg.style.display = "block";
+                caBox.style.borderColor = "#39ff14"; // Flash Green
+                
+                setTimeout(() => {
+                    msg.style.display = "none";
+                    caBox.style.borderColor = "#8338ec"; // Back to Purple
+                }, 2000);
+            });
+        }
+    </script>
+
+</body>
+</html>
